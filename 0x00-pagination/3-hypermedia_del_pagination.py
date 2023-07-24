@@ -40,32 +40,33 @@ class Server:
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-            """Return hyper_index
-            """
-            assert index is None or isinstance(index, int), "Index must be an integer."
-            assert page_size > 0, "Page size must be a positive integer."
+        """Return hyper_index
+        """
+        assert index is None or isinstance(
+                index, int), "Index must be an integer."
+        assert page_size > 0, "Page size must be a positive integer."
 
-            indexed_dataset = self.indexed_dataset()
-            max_index = len(indexed_dataset) - 1
+        indexed_dataset = self.indexed_dataset()
+        max_index = len(indexed_dataset) - 1
 
-            if index is None:
-                index = 0
-            else:
-                assert 0 <= index <= max_index, "Invalid index."
+        if index is None:
+            index = 0
+        else:
+            assert 0 <= index <= max_index, "Invalid index."
 
-            next_index = index + page_size
-            if next_index > max_index:
-                next_index = None
+        next_index = index + page_size
+        if next_index > max_index:
+            next_index = None
 
-            data = []
-            for i in range(index, min(index + page_size, max_index + 1)):
-                if i in indexed_dataset:
-                    data.append(indexed_dataset[i])
+        data = []
+        for i in range(index, min(index + page_size, max_index + 1)):
+            if i in indexed_dataset:
+                data.append(indexed_dataset[i])
 
-            hyper_metadata = {
-                    "index": index,
-                    "next_index": next_index,
-                    "page_size": page_size,
-                    "data": data
-                }
-            return hyper_metadata
+        hyper_metadata = {
+                "index": index,
+                "next_index": next_index,
+                "page_size": page_size,
+                "data": data
+            }
+        return hyper_metadata
