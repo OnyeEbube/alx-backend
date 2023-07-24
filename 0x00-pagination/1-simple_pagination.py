@@ -41,7 +41,7 @@ class Server:
         assert page != 0, "raised with 0"
         assert page > 0, "raised with negative values"
         assert type(
-                page_size) is int, "raised when page and/or page_size are not ints"
+            page_size) is int, "raised when page and/orpage_size are not ints"
 
         assert page_size != 0, "raised with 0"
         assert page_size > 0, "raised with negative values"
