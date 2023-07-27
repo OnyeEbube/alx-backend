@@ -22,9 +22,11 @@ If key is None or if the key doesn’t exist in
 self.cache_data, return None.
 """
 
+from queue import PriorityQueue
+
 
 BaseCaching = __import__('base_caching').BaseCaching
-from queue import PriorityQueue
+
 
 class LFUCache(BaseCaching):
     """_summary_
