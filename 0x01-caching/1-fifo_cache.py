@@ -22,7 +22,7 @@ class FIFOCache(BaseCaching):
             for i in self.cache_data:
                 j += 1
             if j >= BaseCaching.MAX_ITEMS \
-                    and key not in self.cahe_data.keys():
+                    and key not in self.cache_data.keys():
                 first_key = self.keys_order[0]
                 self.keys_order.pop(0)
                 del self.cache_data[first_key]
