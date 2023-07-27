@@ -6,6 +6,7 @@ BaseCaching = __import__('base_caching').BaseCaching
 
 
 class BasicCache(BaseCaching):
+    """_summary_"""
     def __init__(self):
         """_summary_
         """
