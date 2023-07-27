@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """1-fifo_cache"""
+
+
 BaseCaching = __import__('base_caching').BaseCaching
 
 
@@ -7,12 +9,14 @@ class FIFOCache(BaseCaching):
     """_summary_
     """
     def __init__(self):
-        """_summary_"""
+        """_summary_
+        """
         super().__init__()
         self.keys_order = []
 
     def put(self, key, item):
-        """_summary_"""
+        """_summary_
+        """
         if key is not None or item is not None:
             j = 0
             for i in self.cache_data:
