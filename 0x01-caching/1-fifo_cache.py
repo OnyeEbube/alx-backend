@@ -17,16 +17,16 @@ class FIFOCache(BaseCaching):
     def put(self, key, item):
         """_summary_
         """
-        if key is not None or item is not None:
+        if key is None or item is None:
+            pass
+        else:
             if len(self.cache_data) >= BaseCaching.MAX_ITEMS \
-                    and key not in self.cache_data:
+                    and key not in self.cache_data.keys():
                 first_key = self.keys_order.pop(0)
                 del self.cache_data[first_key]
                 print("DISCARD: {}".format(first_key))
             self.cache_data[key] = item
             self.keys_order.append(key)
-        else:
-            pass
 
     def get(self, key):
         """return the value in self.cache_data linked to key
