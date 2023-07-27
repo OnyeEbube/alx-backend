@@ -25,6 +25,8 @@ class FIFOCache(BaseCaching):
                 print("DISCARD: {}". format(first_key))
             self.cache_data[key] = item
             self.keys_order.append(key)
+        else:
+            pass
 
     def get(self, key):
         """return the value in self.cache_data linked to key
