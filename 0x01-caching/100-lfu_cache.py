@@ -22,7 +22,7 @@ If key is None or if the key doesn’t exist in
 self.cache_data, return None.
 """
 
-from queue import PriorityQueue
+from collections import defaultdict
 
 
 BaseCaching = __import__('base_caching').BaseCaching
@@ -36,8 +36,9 @@ class LFUCache(BaseCaching):
         """_summary_
         """
         super().__init__()
-        self.frequency_map = {}
-        self.pq = PriorityQueue()
+        self.frequency_map = defaultdict(int)
+        self.frequencies = defaultdict(list)
+        self.min_frequency = 0
 
     def put(self, key, item):
         """_summary_
@@ -50,18 +51,20 @@ class LFUCache(BaseCaching):
             pass
         if key in self.cache_data:
             self.cache_data[key] = item
+            self.frequency_map[key] += 1
         else:
             if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-                while self.pq.qsize() > 0:
-                    freq, lfu_key = self.pq.get()
-                    if self.frequency_map[lfu_key] == freq:
-                        del self.cache_data[lfu_key]
-                        print("DISCARD: {}".format(lfu_key))
-                        del self.frequency_map[lfu_key]
-                        break
+                while not self.frequencies[self.min_frequency]:
+                    self.min_frequency += 1
+                lfu_key = self.frequencies[self.min_frequency].pop(0)
+                del self.cache_data[lfu_key]
+                print("DISCARD: {}".format(lfu_key))
+                del self.frequency_map[lfu_key]
+
             self.cache_data[key] = item
-            self.frequency_map[key] = 0
-            self.pq.put((0, key))
+            self.frequency_map[key] = 1
+            self.frequencies[1].append(key)
+            self.min_frequency = 1
 
     def get(self, key):
         """return the value in self.cache_data linked to key
@@ -69,9 +72,17 @@ class LFUCache(BaseCaching):
         Args:
                         key (_type_): _description_
         """
-        if key is None or key not in self.cache_data.keys():
+        if key is None or key not in self.cache_data:
             return None
 
         self.frequency_map[key] += 1
-        self.pq.put((self.frequency_map[key], key))
+        freq = self.frequency_map[key]
+
+        if key in self.frequencies[freq - 1]:
+            self.frequencies[freq - 1].remove(key)
+        self.frequencies[freq].append(key)
+
+        if not self.frequencies[self.min_frequency]:
+            self.min_frequency += 1
+
         return self.cache_data[key]
