@@ -20,6 +20,7 @@ class Config(object):
 # configuring the flask app
 app = Flask(__name__)
 app.config.from_object(Config)
+app.url_map.strict_slashes = False
 babel = Babel(app)
 
 
@@ -28,7 +29,7 @@ def index():
     """
     renders template index.html
     """
-    return render_template('2-index.html')
+    return render_template('3-index.html')
 
 @babel.localeselector
 def get_locale():
